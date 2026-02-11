@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - claude/add-figma-mcp-server-MI67z
+      - main
   workflow_dispatch:
 
 permissions:
