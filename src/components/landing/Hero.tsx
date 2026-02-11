@@ -73,7 +73,7 @@ export function Hero() {
               기업의 ESG와 <br />
               <span className="text-[rgba(5,97,164,0)] bg-clip-text bg-gradient-to-r from-[#fff] to-[#ffffff]/60">
                 컴플라이언스 관리
-              </span>의 시작1
+              </span>의 시작
             </h1>
             <p className="text-lg text-white/60 mb-14 max-w-xl mx-auto lg:mx-0 leading-relaxed">
               복잡한 산업안전보건법부터 중대재해처벌법까지. 
