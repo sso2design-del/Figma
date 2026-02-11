@@ -4,7 +4,7 @@
   import path from 'path';
 
   export default defineConfig({
-    base: '/Figma/',
+    base: process.env.NODE_ENV === 'production' ? '/Figma/' : '/',
     plugins: [react()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],

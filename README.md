@@ -78,6 +78,29 @@ Figma/
 
 See [mcp-server/README.md](mcp-server/README.md) for detailed MCP server documentation.
 
+## ZIP Incremental Merge
+
+Use this when you receive a new Figma-generated ZIP and want to apply only changed files.
+
+1. Dry-run (compare only):
+   ```bash
+   npm run figma:merge -- --zip ~/Downloads/figma-export.zip
+   ```
+
+2. Apply added/modified files:
+   ```bash
+   npm run figma:merge -- --zip ~/Downloads/figma-export.zip --apply
+   ```
+
+3. Apply + remove deleted files too:
+   ```bash
+   npm run figma:merge -- --zip ~/Downloads/figma-export.zip --apply --delete
+   ```
+
+Notes:
+- Default compare scope: `src`, `assets`, `index.html`
+- Overwritten/deleted files are backed up to `.figma-backups/<timestamp>/`
+
 ## 🎨 Figma Integration Features
 
 ### React Components

@@ -6,6 +6,7 @@ mcp-server/node_modules/
 dist/
 mcp-server/dist/
 build/
+.figma-backups/
 
 # Environment variables
 .env
@@ -32,3 +33,7 @@ lerna-debug.log*
 
 # Lock files (optional - uncomment if needed)
 # package-lock.json
+
+# claude
+.claude
+CLAUDE.md
