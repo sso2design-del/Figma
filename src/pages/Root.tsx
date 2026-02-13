@@ -10,9 +10,11 @@ export default function Root() {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.hash) {
+    if (location.hash === "#pricing") {
       scrollToHashTarget(location.hash, "smooth");
+      return;
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname, location.hash]);
 
   return (

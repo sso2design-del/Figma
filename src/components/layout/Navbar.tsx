@@ -46,6 +46,7 @@ export function Navbar() {
   ];
 
   const isHashLink = (href: string) => href.startsWith("/#");
+  const isPricingHashLink = (href: string) => href === "/#pricing";
   const getHashFromHref = (href: string) => `#${href.split("#")[1] ?? ""}`;
 
   const handleHashLinkClick = (href: string, closeMobileMenu = false) => {
@@ -53,6 +54,14 @@ export function Navbar() {
 
     if (closeMobileMenu) {
       setMobileMenuOpen(false);
+    }
+
+    if (!isPricingHashLink(href)) {
+      if (location.pathname !== "/" || location.hash) {
+        navigate("/");
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
     }
 
     if (location.pathname !== "/") {
@@ -65,6 +74,13 @@ export function Navbar() {
       navigate({ pathname: "/", hash });
     }
     scrollToHashTarget(hash, "smooth");
+  };
+
+  const handleRouteLinkClick = (closeMobileMenu = false) => {
+    if (closeMobileMenu) {
+      setMobileMenuOpen(false);
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -97,6 +113,7 @@ export function Navbar() {
               {link.isRoute ? (
                 <Link
                   to={link.href}
+                  onClick={() => handleRouteLinkClick()}
                   className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
                     location.pathname.startsWith("/insight") || location.pathname === "/esg"
                       ? "text-gray-700 hover:text-[#001B3D]"
@@ -165,7 +182,11 @@ export function Navbar() {
                               transition={{ delay: index * 0.05 }}
                             >
                               {link.isRoute ? (
-                                <Link to={link.href} className={menuItemClassName}>
+                                <Link
+                                  to={link.href}
+                                  onClick={() => handleRouteLinkClick()}
+                                  className={menuItemClassName}
+                                >
                                   <div className="mt-0.5 w-10 h-10 rounded-lg bg-[#F3F6F9] group-hover:bg-[#0561A4] flex items-center justify-center transition-colors flex-shrink-0">
                                     <Icon className="w-5 h-5 text-[#0561A4] group-hover:text-white transition-colors" />
                                   </div>
@@ -251,7 +272,7 @@ export function Navbar() {
                     key={link.name}
                     to={link.href}
                     className="text-white/80 hover:text-white"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => handleRouteLinkClick(true)}
                   >
                     {link.name}
                   </Link>
