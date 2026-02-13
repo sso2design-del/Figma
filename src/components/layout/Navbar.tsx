@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { Button } from "../ui/button";
 import { Menu, X, Building2, FileText, Network, Leaf, Package, ShieldCheck, AlertTriangle, Award, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import LogoSmall from "../../imports/LogoSmall";
 import Component02ElementsLogo from "../../imports/02ElementsLogo";
+import { scrollToHashTarget } from "../../lib/hash-scroll";
 
 export function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -44,10 +46,26 @@ export function Navbar() {
   ];
 
   const isHashLink = (href: string) => href.startsWith("/#");
-  const toHomeHash = (href: string) => ({
-    pathname: "/",
-    hash: href.slice(1),
-  });
+  const getHashFromHref = (href: string) => `#${href.split("#")[1] ?? ""}`;
+
+  const handleHashLinkClick = (href: string, closeMobileMenu = false) => {
+    const hash = getHashFromHref(href);
+
+    if (closeMobileMenu) {
+      setMobileMenuOpen(false);
+    }
+
+    if (location.pathname !== "/") {
+      navigate({ pathname: "/", hash });
+      return;
+    }
+
+    // Same-page hash navigation does not always trigger re-scroll in SPA.
+    if (location.hash !== hash) {
+      navigate({ pathname: "/", hash });
+    }
+    scrollToHashTarget(hash, "smooth");
+  };
 
   return (
     <nav
@@ -91,8 +109,12 @@ export function Navbar() {
                   )}
                 </Link>
               ) : isHashLink(link.href) ? (
-                <Link
-                  to={toHomeHash(link.href)}
+                <a
+                  href={link.href}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    handleHashLinkClick(link.href);
+                  }}
                   className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
                     location.pathname.startsWith("/insight") || location.pathname === "/esg"
                       ? "text-gray-700 hover:text-[#001B3D]"
@@ -103,7 +125,7 @@ export function Navbar() {
                   {link.hasDropdown && (
                     <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.name ? 'rotate-180' : ''}`} />
                   )}
-                </Link>
+                </a>
               ) : (
                 <a
                   href={link.href}
@@ -153,7 +175,14 @@ export function Navbar() {
                                   </div>
                                 </Link>
                               ) : isHashLink(link.href) ? (
-                                <Link to={toHomeHash(link.href)} className={menuItemClassName}>
+                                <a
+                                  href={link.href}
+                                  onClick={(event) => {
+                                    event.preventDefault();
+                                    handleHashLinkClick(link.href);
+                                  }}
+                                  className={menuItemClassName}
+                                >
                                   <div className="mt-0.5 w-10 h-10 rounded-lg bg-[#F3F6F9] group-hover:bg-[#0561A4] flex items-center justify-center transition-colors flex-shrink-0">
                                     <Icon className="w-5 h-5 text-[#0561A4] group-hover:text-white transition-colors" />
                                   </div>
@@ -161,7 +190,7 @@ export function Navbar() {
                                     <div className="text-sm font-bold text-[#001B3D] mb-0.5">{item.name}</div>
                                     <div className="text-xs text-gray-500 leading-relaxed">{item.description}</div>
                                   </div>
-                                </Link>
+                                </a>
                               ) : (
                                 <a href={link.href} className={menuItemClassName}>
                                   <div className="mt-0.5 w-10 h-10 rounded-lg bg-[#F3F6F9] group-hover:bg-[#0561A4] flex items-center justify-center transition-colors flex-shrink-0">
@@ -227,14 +256,17 @@ export function Navbar() {
                     {link.name}
                   </Link>
                 ) : isHashLink(link.href) ? (
-                  <Link
+                  <a
                     key={link.name}
-                    to={toHomeHash(link.href)}
+                    href={link.href}
                     className="text-white/80 hover:text-white"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleHashLinkClick(link.href, true);
+                    }}
                   >
                     {link.name}
-                  </Link>
+                  </a>
                 ) : (
                   <a
                     key={link.name}
