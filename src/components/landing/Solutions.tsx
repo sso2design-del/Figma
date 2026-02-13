@@ -14,7 +14,7 @@ const solutions: { icon: IconType; title: string; desc: string; delay: number; d
     delay: 0.1,
     detailContent: "CompliLaw ESG 경영 솔루션은 기업의 지속가능경영 전략 수립부터 실행, 모니터링, 보고까지 전 과정을 지원합니다. 환경(E), 사회(S), 지배구조(G) 각 영역에서 기업이 직면한 과제를 체계적으로 관리하고, 글로벌 표준에 부합하는 ESG 경영 체계를 구축할 수 있도록 돕습니다. 데이터 기반의 의사결정을 통해 ESG 성과를 지속적으로 개선하고, 이해관계자와의 신뢰를 강화할 수 있습니다.",
     features: [
-      "ESG 목표 수립 및 KPI 관리 - 전사적인 ESG 목표를 설정하고 부서별 세부 목표를 연계하여 관리합니다.",
+      "ESG 목표 수립 및 KPI 관리 - 전사적인 ESG 목표를 설정하고 부서별 세부 목표를 연계하여 ���리합니다.",
       "실시간 성과 모니터링 - 대시보드를 통해 ESG 이행 현황을 실시간으로 확인하고 이슈를 조기에 파악합니다.",
       "리스크 평가 및 관리 - ESG 리스크를 식별하고 우선순위를 정하여 선제적으로 대응합니다.",
       "이해관계자 참여 관리 - 임직원, 투자자, 지역사회 등 다양한 이해관계자의 의견을 수렴하고 소통합니다.",
@@ -226,7 +226,7 @@ export function Solutions() {
 
         <div className="grid md:grid-cols-2 gap-6 mt-8">
           {/* ESG Solution Part */}
-          <a href="#esg" className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#006B56] to-[#004d3f] p-10 transition-all hover:-translate-y-1 hover:shadow-2xl block">
+          <a href="/esg" className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#006B56] to-[#004d3f] p-10 transition-all hover:-translate-y-1 hover:shadow-2xl block">
             <div className="relative z-10">
                 <h3 className="text-2xl font-bold text-white mb-4">ESG 솔루션 파트</h3>
                 <p className="text-emerald-100 mb-8 leading-relaxed">

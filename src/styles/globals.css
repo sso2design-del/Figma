@@ -242,6 +242,15 @@ html {
   }
 }
 
+@keyframes slideInLeft {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 87%;
+  }
+}
+
 @keyframes slideDown {
   0% {
     transform: translateY(-100%);
@@ -293,6 +302,10 @@ html {
   animation: slideInRight 0.6s ease-out both;
 }
 
+.animate-slideInLeft {
+  animation: slideInLeft 1.5s ease-out both;
+}
+
 .animate-wiggle {
   animation: wiggle 0.5s ease-in-out;
 }
@@ -301,26 +314,23 @@ html {
   animation: pulse 3s ease-in-out infinite;
 }
 
-.animation-delay-200 {
-  animation-delay: 0.2s;
+/* Infinite loop animations */
+.animate-fadeInScale-infinite {
+  animation: fadeInScale 3s ease-out both infinite;
 }
 
-.animation-delay-300 {
-  animation-delay: 0.3s;
+.animate-fadeInUp-infinite {
+  animation: fadeInUp 3s ease-out both infinite;
 }
 
-.animation-delay-400 {
-  animation-delay: 0.4s;
+.animate-fadeInLeft-infinite {
+  animation: fadeInLeft 2.5s ease-out both infinite;
 }
 
-.animation-delay-500 {
-  animation-delay: 0.5s;
+.animate-slideInLeft-infinite {
+  animation: slideInLeft 4s ease-out both infinite;
 }
 
-.animation-delay-600 {
-  animation-delay: 0.6s;
-}
-
-.animation-delay-700 {
-  animation-delay: 0.7s;
+.animate-wiggle-infinite {
+  animation: wiggle 2s ease-in-out infinite;
 }
