@@ -13,6 +13,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const isInsightPage = location.pathname.startsWith("/insight");
+  const isLightNavbarPage = isInsightPage || location.pathname === "/esg";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,10 +89,10 @@ export function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? location.pathname === "/insight" || location.pathname === "/insight-detail" || location.pathname === "/esg"
+          ? isLightNavbarPage
             ? "bg-white/95 backdrop-blur-md border-b border-gray-200 py-4"
             : "bg-[#001B3D]/80 backdrop-blur-md border-b border-white/10 py-4"
-          : location.pathname === "/insight" || location.pathname === "/insight-detail" || location.pathname === "/esg"
+          : isLightNavbarPage
           ? "bg-white/80 backdrop-blur-sm py-6"
           : "bg-transparent py-6"
       }`}
@@ -98,7 +100,7 @@ export function Navbar() {
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="w-[126px] h-[26px] relative scale-125 origin-left">
-          {(location.pathname.startsWith("/insight") || location.pathname === "/esg") ? <Component02ElementsLogo /> : <LogoSmall />}
+          {isLightNavbarPage ? <Component02ElementsLogo /> : <LogoSmall />}
         </Link>
 
         {/* Desktop Links */}
@@ -115,7 +117,7 @@ export function Navbar() {
                   to={link.href}
                   onClick={() => handleRouteLinkClick()}
                   className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                    location.pathname.startsWith("/insight") || location.pathname === "/esg"
+                    isLightNavbarPage
                       ? "text-gray-700 hover:text-[#001B3D]"
                       : "text-white/80 hover:text-white"
                   }`}
@@ -133,7 +135,7 @@ export function Navbar() {
                     handleHashLinkClick(link.href);
                   }}
                   className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                    location.pathname.startsWith("/insight") || location.pathname === "/esg"
+                    isLightNavbarPage
                       ? "text-gray-700 hover:text-[#001B3D]"
                       : "text-white/80 hover:text-white"
                   }`}
@@ -147,7 +149,7 @@ export function Navbar() {
                 <a
                   href={link.href}
                   className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                    location.pathname.startsWith("/insight") || location.pathname === "/esg"
+                    isLightNavbarPage
                       ? "text-gray-700 hover:text-[#001B3D]"
                       : "text-white/80 hover:text-white"
                   }`}
@@ -249,7 +251,7 @@ export function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className={`lg:hidden ${(location.pathname === "/insight" || location.pathname === "/insight-detail" || location.pathname === "/esg") ? "text-gray-700" : "text-white"}`}
+          className={`lg:hidden ${isLightNavbarPage ? "text-gray-700" : "text-white"}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X /> : <Menu />}
