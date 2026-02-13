@@ -43,6 +43,12 @@ export function Navbar() {
     { name: "C.Insight", href: "/insight", isRoute: true },
   ];
 
+  const isHashLink = (href: string) => href.startsWith("/#");
+  const toHomeHash = (href: string) => ({
+    pathname: "/",
+    hash: href.slice(1),
+  });
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -73,6 +79,20 @@ export function Navbar() {
               {link.isRoute ? (
                 <Link
                   to={link.href}
+                  className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
+                    location.pathname.startsWith("/insight") || location.pathname === "/esg"
+                      ? "text-gray-700 hover:text-[#001B3D]"
+                      : "text-white/80 hover:text-white"
+                  }`}
+                >
+                  {link.name}
+                  {link.hasDropdown && (
+                    <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.name ? 'rotate-180' : ''}`} />
+                  )}
+                </Link>
+              ) : isHashLink(link.href) ? (
+                <Link
+                  to={toHomeHash(link.href)}
                   className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
                     location.pathname.startsWith("/insight") || location.pathname === "/esg"
                       ? "text-gray-700 hover:text-[#001B3D]"
@@ -124,6 +144,16 @@ export function Navbar() {
                             >
                               {link.isRoute ? (
                                 <Link to={link.href} className={menuItemClassName}>
+                                  <div className="mt-0.5 w-10 h-10 rounded-lg bg-[#F3F6F9] group-hover:bg-[#0561A4] flex items-center justify-center transition-colors flex-shrink-0">
+                                    <Icon className="w-5 h-5 text-[#0561A4] group-hover:text-white transition-colors" />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="text-sm font-bold text-[#001B3D] mb-0.5">{item.name}</div>
+                                    <div className="text-xs text-gray-500 leading-relaxed">{item.description}</div>
+                                  </div>
+                                </Link>
+                              ) : isHashLink(link.href) ? (
+                                <Link to={toHomeHash(link.href)} className={menuItemClassName}>
                                   <div className="mt-0.5 w-10 h-10 rounded-lg bg-[#F3F6F9] group-hover:bg-[#0561A4] flex items-center justify-center transition-colors flex-shrink-0">
                                     <Icon className="w-5 h-5 text-[#0561A4] group-hover:text-white transition-colors" />
                                   </div>
@@ -191,6 +221,15 @@ export function Navbar() {
                   <Link
                     key={link.name}
                     to={link.href}
+                    className="text-white/80 hover:text-white"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                ) : isHashLink(link.href) ? (
+                  <Link
+                    key={link.name}
+                    to={toHomeHash(link.href)}
                     className="text-white/80 hover:text-white"
                     onClick={() => setMobileMenuOpen(false)}
                   >
