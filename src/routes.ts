@@ -16,6 +16,4 @@ export const router = createBrowserRouter([
       { path: "insight/:id", Component: InsightDetailPage },
     ],
   },
-], {
-  basename: import.meta.env.BASE_URL,
-});
+]);

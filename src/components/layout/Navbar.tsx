@@ -1,20 +1,16 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useLocation } from "react-router";
 import { Button } from "../ui/button";
 import { Menu, X, Building2, FileText, Network, Leaf, Package, ShieldCheck, AlertTriangle, Award, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import LogoSmall from "../../imports/LogoSmall";
 import Component02ElementsLogo from "../../imports/02ElementsLogo";
-import { scrollToHashTarget } from "../../lib/hash-scroll";
 
 export function Navbar() {
   const location = useLocation();
-  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const isInsightPage = location.pathname.startsWith("/insight");
-  const isLightNavbarPage = isInsightPage || location.pathname === "/esg";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,52 +43,14 @@ export function Navbar() {
     { name: "C.Insight", href: "/insight", isRoute: true },
   ];
 
-  const isHashLink = (href: string) => href.startsWith("/#");
-  const isPricingHashLink = (href: string) => href === "/#pricing";
-  const getHashFromHref = (href: string) => `#${href.split("#")[1] ?? ""}`;
-
-  const handleHashLinkClick = (href: string, closeMobileMenu = false) => {
-    const hash = getHashFromHref(href);
-
-    if (closeMobileMenu) {
-      setMobileMenuOpen(false);
-    }
-
-    if (!isPricingHashLink(href)) {
-      if (location.pathname !== "/" || location.hash) {
-        navigate("/");
-      }
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
-
-    if (location.pathname !== "/") {
-      navigate({ pathname: "/", hash });
-      return;
-    }
-
-    // Same-page hash navigation does not always trigger re-scroll in SPA.
-    if (location.hash !== hash) {
-      navigate({ pathname: "/", hash });
-    }
-    scrollToHashTarget(hash, "smooth");
-  };
-
-  const handleRouteLinkClick = (closeMobileMenu = false) => {
-    if (closeMobileMenu) {
-      setMobileMenuOpen(false);
-    }
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? isLightNavbarPage
+          ? location.pathname === "/insight" || location.pathname === "/insight-detail" || location.pathname === "/esg"
             ? "bg-white/95 backdrop-blur-md border-b border-gray-200 py-4"
             : "bg-[#001B3D]/80 backdrop-blur-md border-b border-white/10 py-4"
-          : isLightNavbarPage
+          : location.pathname === "/insight" || location.pathname === "/insight-detail" || location.pathname === "/esg"
           ? "bg-white/80 backdrop-blur-sm py-6"
           : "bg-transparent py-6"
       }`}
@@ -100,7 +58,7 @@ export function Navbar() {
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="w-[126px] h-[26px] relative scale-125 origin-left">
-          {isLightNavbarPage ? <Component02ElementsLogo /> : <LogoSmall />}
+          {(location.pathname.startsWith("/insight") || location.pathname === "/esg") ? <Component02ElementsLogo /> : <LogoSmall />}
         </Link>
 
         {/* Desktop Links */}
@@ -115,9 +73,8 @@ export function Navbar() {
               {link.isRoute ? (
                 <Link
                   to={link.href}
-                  onClick={() => handleRouteLinkClick()}
                   className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                    isLightNavbarPage
+                    location.pathname.startsWith("/insight") || location.pathname === "/esg"
                       ? "text-gray-700 hover:text-[#001B3D]"
                       : "text-white/80 hover:text-white"
                   }`}
@@ -127,29 +84,11 @@ export function Navbar() {
                     <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.name ? 'rotate-180' : ''}`} />
                   )}
                 </Link>
-              ) : isHashLink(link.href) ? (
-                <a
-                  href={link.href}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    handleHashLinkClick(link.href);
-                  }}
-                  className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                    isLightNavbarPage
-                      ? "text-gray-700 hover:text-[#001B3D]"
-                      : "text-white/80 hover:text-white"
-                  }`}
-                >
-                  {link.name}
-                  {link.hasDropdown && (
-                    <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.name ? 'rotate-180' : ''}`} />
-                  )}
-                </a>
               ) : (
                 <a
                   href={link.href}
                   className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                    isLightNavbarPage
+                    location.pathname.startsWith("/insight") || location.pathname === "/esg"
                       ? "text-gray-700 hover:text-[#001B3D]"
                       : "text-white/80 hover:text-white"
                   }`}
@@ -175,57 +114,23 @@ export function Navbar() {
                       <div className="p-3">
                         {link.subMenu.map((item, index) => {
                           const Icon = item.icon;
-                          const menuItemClassName = "flex items-start gap-3 p-3 rounded-xl hover:bg-[#F3F6F9] transition-colors group cursor-pointer";
                           return (
-                            <motion.div
+                            <motion.a
                               key={item.name}
+                              href={link.href}
                               initial={{ opacity: 0, x: -10 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: index * 0.05 }}
+                              className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#F3F6F9] transition-colors group cursor-pointer"
                             >
-                              {link.isRoute ? (
-                                <Link
-                                  to={link.href}
-                                  onClick={() => handleRouteLinkClick()}
-                                  className={menuItemClassName}
-                                >
-                                  <div className="mt-0.5 w-10 h-10 rounded-lg bg-[#F3F6F9] group-hover:bg-[#0561A4] flex items-center justify-center transition-colors flex-shrink-0">
-                                    <Icon className="w-5 h-5 text-[#0561A4] group-hover:text-white transition-colors" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-sm font-bold text-[#001B3D] mb-0.5">{item.name}</div>
-                                    <div className="text-xs text-gray-500 leading-relaxed">{item.description}</div>
-                                  </div>
-                                </Link>
-                              ) : isHashLink(link.href) ? (
-                                <a
-                                  href={link.href}
-                                  onClick={(event) => {
-                                    event.preventDefault();
-                                    handleHashLinkClick(link.href);
-                                  }}
-                                  className={menuItemClassName}
-                                >
-                                  <div className="mt-0.5 w-10 h-10 rounded-lg bg-[#F3F6F9] group-hover:bg-[#0561A4] flex items-center justify-center transition-colors flex-shrink-0">
-                                    <Icon className="w-5 h-5 text-[#0561A4] group-hover:text-white transition-colors" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-sm font-bold text-[#001B3D] mb-0.5">{item.name}</div>
-                                    <div className="text-xs text-gray-500 leading-relaxed">{item.description}</div>
-                                  </div>
-                                </a>
-                              ) : (
-                                <a href={link.href} className={menuItemClassName}>
-                                  <div className="mt-0.5 w-10 h-10 rounded-lg bg-[#F3F6F9] group-hover:bg-[#0561A4] flex items-center justify-center transition-colors flex-shrink-0">
-                                    <Icon className="w-5 h-5 text-[#0561A4] group-hover:text-white transition-colors" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-sm font-bold text-[#001B3D] mb-0.5">{item.name}</div>
-                                    <div className="text-xs text-gray-500 leading-relaxed">{item.description}</div>
-                                  </div>
-                                </a>
-                              )}
-                            </motion.div>
+                              <div className="mt-0.5 w-10 h-10 rounded-lg bg-[#F3F6F9] group-hover:bg-[#0561A4] flex items-center justify-center transition-colors flex-shrink-0">
+                                <Icon className="w-5 h-5 text-[#0561A4] group-hover:text-white transition-colors" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="text-sm font-bold text-[#001B3D] mb-0.5">{item.name}</div>
+                                <div className="text-xs text-gray-500 leading-relaxed">{item.description}</div>
+                              </div>
+                            </motion.a>
                           );
                         })}
                       </div>
@@ -251,7 +156,7 @@ export function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className={`lg:hidden ${isLightNavbarPage ? "text-gray-700" : "text-white"}`}
+          className={`lg:hidden ${(location.pathname === "/insight" || location.pathname === "/insight-detail" || location.pathname === "/esg") ? "text-gray-700" : "text-white"}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X /> : <Menu />}
@@ -269,37 +174,14 @@ export function Navbar() {
           >
             <div className="flex flex-col p-6 gap-4">
               {navLinks.filter(link => !link.hidden).map((link) => (
-                link.isRoute ? (
-                  <Link
-                    key={link.name}
-                    to={link.href}
-                    className="text-white/80 hover:text-white"
-                    onClick={() => handleRouteLinkClick(true)}
-                  >
-                    {link.name}
-                  </Link>
-                ) : isHashLink(link.href) ? (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="text-white/80 hover:text-white"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handleHashLinkClick(link.href, true);
-                    }}
-                  >
-                    {link.name}
-                  </a>
-                ) : (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="text-white/80 hover:text-white"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </a>
-                )
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="text-white/80 hover:text-white"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </a>
               ))}
               <div className="h-px bg-white/10 my-2" />
               <Button 

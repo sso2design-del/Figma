@@ -4,6 +4,10 @@ import { ArrowRight, CheckCircle2, Quote, Calendar, TrendingUp, Shield, Globe, U
 import { useState, useRef, useEffect } from "react";
 import { ThreeDIcon } from "../components/landing/ThreeDIcon";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, BarChart as RechartsBarChart, Bar, PieChart, Pie, Cell, LineChart, Line, ResponsiveContainer } from 'recharts';
+import SamsungLogo from "../imports/SamsungLogo";
+import HyundaiLogo from "../imports/HyundaiLogo";
+import SKHynixLogo from "../imports/SKHynixLogo";
+import LGChemLogo from "../imports/LGChemLogo";
 
 // Chart Data for each tab
 const esgScoreData = [
@@ -220,6 +224,7 @@ function VideoSection() {
 export function EsgPage() {
   const [showContactModal, setShowContactModal] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+  const [selectedPillar, setSelectedPillar] = useState<'environment' | 'social' | 'governance' | null>(null);
 
   return (
     <div className="min-h-screen bg-white">
@@ -352,86 +357,208 @@ export function EsgPage() {
         </div>
       </section>
 
-      {/* ESG Pillars - Minimal */}
-      <section className="py-20 bg-slate-50">
+      {/* ESG Pillars - Card Style with Modal */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+          <div className="max-w-6xl mx-auto text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
               CompliLaw가 <span className="text-[#0561A4]">E·S·G 전 영역</span>을 지원합니다
             </h2>
-            <p className="text-lg text-slate-600">
-              환경, 사회, 지배구조 데이터 관리부터 공시까지 통합 솔루션
-            </p>
+            <div className="inline-block bg-slate-100 px-4 py-2 rounded-full text-sm text-slate-600 mt-4">
+              ESG Management
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="bg-white rounded-2xl p-8 border-2 border-slate-100 hover:border-emerald-200 transition-all">
-              <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-6">
-                <Leaf className="w-6 h-6 text-emerald-600" />
+          {/* Cards Grid */}
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {/* Environment Card */}
+            <motion.div
+              onClick={() => setSelectedPillar('environment')}
+              className="relative h-[400px] rounded-3xl overflow-hidden cursor-pointer group"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&h=800&fit=crop"
+                alt="Environment"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+              
+              {/* Label */}
+              <div className="absolute top-6 left-6">
+                <span className="text-white/90 text-sm font-medium">Environment</span>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Environment</h3>
-              <p className="text-sm text-slate-500 mb-4">환경</p>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-emerald-500" />
-                  탄소배출량 관리
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-emerald-500" />
-                  에너지 효율화
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-emerald-500" />
-                  폐기물 관리
-                </li>
-              </ul>
-            </div>
 
-            <div className="bg-white rounded-2xl p-8 border-2 border-slate-100 hover:border-blue-200 transition-all">
-              <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-6">
-                <Users className="w-6 h-6 text-[#0561A4]" />
+              {/* Title */}
+              <div className="absolute bottom-6 left-6 right-6">
+                <h3 className="text-white text-2xl font-bold mb-2">
+                  탄소중립 달성을 위한<br />체계적 환경 관리
+                </h3>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Social</h3>
-              <p className="text-sm text-slate-500 mb-4">사회</p>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-[#0561A4]" />
-                  인권 및 노동권
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-[#0561A4]" />
-                  산업안전보건
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-[#0561A4]" />
-                  지역사회 공헌
-                </li>
-              </ul>
-            </div>
 
-            <div className="bg-white rounded-2xl p-8 border-2 border-slate-100 hover:border-[#CEA331]/30 transition-all">
-              <div className="w-12 h-12 rounded-xl bg-[#CEA331]/10 flex items-center justify-center mb-6">
-                <Building2 className="w-6 h-6 text-[#CEA331]" />
+              {/* Plus Icon */}
+              <div className="absolute bottom-6 right-6">
+                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                  <span className="text-white text-2xl font-light">+</span>
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Governance</h3>
-              <p className="text-sm text-slate-500 mb-4">지배구조</p>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-[#CEA331]" />
-                  이사회 독립성
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-[#CEA331]" />
-                  윤리경영
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1 h-1 rounded-full bg-[#CEA331]" />
-                  리스크 관리
-                </li>
-              </ul>
-            </div>
+            </motion.div>
+
+            {/* Social Card */}
+            <motion.div
+              onClick={() => setSelectedPillar('social')}
+              className="relative h-[400px] rounded-3xl overflow-hidden cursor-pointer group"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=800&fit=crop"
+                alt="Social"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+              
+              <div className="absolute top-6 left-6">
+                <span className="text-white/90 text-sm font-medium">Social</span>
+              </div>
+
+              <div className="absolute bottom-6 left-6 right-6">
+                <h3 className="text-white text-2xl font-bold mb-2">
+                  인권 존중과<br />안전한 근무환경 구축
+                </h3>
+              </div>
+
+              <div className="absolute bottom-6 right-6">
+                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                  <span className="text-white text-2xl font-light">+</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Governance Card */}
+            <motion.div
+              onClick={() => setSelectedPillar('governance')}
+              className="relative h-[400px] rounded-3xl overflow-hidden cursor-pointer group"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              <img
+                src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=800&fit=crop"
+                alt="Governance"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+              
+              <div className="absolute top-6 left-6">
+                <span className="text-white/90 text-sm font-medium">Governance</span>
+              </div>
+
+              <div className="absolute bottom-6 left-6 right-6">
+                <h3 className="text-white text-2xl font-bold mb-2">
+                  투명한 지배구조와<br />윤리경영 실천
+                </h3>
+              </div>
+
+              <div className="absolute bottom-6 right-6">
+                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                  <span className="text-white text-2xl font-light">+</span>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
+
+        {/* Modal */}
+        {selectedPillar && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-6"
+            onClick={() => setSelectedPillar(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedPillar(null)}
+                className="absolute top-6 right-6 w-10 h-10 rounded-full bg-[#C84B31] hover:bg-[#B03A22] text-white flex items-center justify-center transition-colors z-10"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Modal Content */}
+              <div className="p-12">
+                {selectedPillar === 'environment' && (
+                  <>
+                    <p className="text-sm text-slate-500 mb-2">Environment</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-8">
+                      탄소중립 달성을 위한 체계적 환경 관리
+                    </h2>
+                    <img
+                      src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&h=600&fit=crop"
+                      alt="Environment"
+                      className="w-full h-80 object-cover rounded-2xl mb-8"
+                    />
+                    <p className="text-slate-700 leading-relaxed">
+                      CompliLaw의 환경(E) 솔루션은 기업의 탄소중립 목표 달성을 위한 통합 환경 관리 시스템입니다. 
+                      Scope 1·2·3 탄소배출량을 정확하게 측정하고, 에너지 효율화 프로그램을 통해 배출량을 감축합니다. 
+                      폐기물 관리 시스템으로 자원 순환을 촉진하고, 수자원 관리를 최적화하여 환경 영향을 최소화합니다. 
+                      실시간 모니터링 대시보드로 환경 성과를 추적하고, TCFD 등 글로벌 환경 공시 기준에 대응합니다.
+                    </p>
+                  </>
+                )}
+
+                {selectedPillar === 'social' && (
+                  <>
+                    <p className="text-sm text-slate-500 mb-2">Social</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-8">
+                      인권 존중과 안전한 근무환경 구축
+                    </h2>
+                    <img
+                      src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&h=600&fit=crop"
+                      alt="Social"
+                      className="w-full h-80 object-cover rounded-2xl mb-8"
+                    />
+                    <p className="text-slate-700 leading-relaxed">
+                      CompliLaw의 사회(S) 솔루션은 임직원의 인권과 노동권을 보호하고, 안전한 근무환경을 조성합니다. 
+                      산업안전보건 관리 시스템으로 중대재해를 예방하고, 다양성과 포용성을 증진하는 조직문화를 구축합니다. 
+                      협력사 인권 실사를 통해 공급망 전반의 사회적 책임을 강화하고, 지역사회 공헌 활동을 체계적으로 관리합니다. 
+                      임직원 만족도 조사와 고충처리 시스템으로 건강한 조직문화를 만들어갑니다.
+                    </p>
+                  </>
+                )}
+
+                {selectedPillar === 'governance' && (
+                  <>
+                    <p className="text-sm text-slate-500 mb-2">Governance</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-8">
+                      투명한 지배구조와 윤리경영 실천
+                    </h2>
+                    <img
+                      src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=600&fit=crop"
+                      alt="Governance"
+                      className="w-full h-80 object-cover rounded-2xl mb-8"
+                    />
+                    <p className="text-slate-700 leading-relaxed">
+                      CompliLaw의 지배구조(G) 솔루션은 이사회의 독립성과 전문성을 강화하고, 투명한 의사결정 체계를 구축합니다. 
+                      윤리경영 시스템으로 부패 방지와 공정거래를 실천하며, 내부통제 시스템으로 리스크를 체계적으로 관리합니다. 
+                      주주권 보호와 정보 공시의 투명성을 높이고, 컴플라이언스 관리를 통해 법규 위반을 사전에 방지합니다. 
+                      이사회 운영 현황과 경영진 보수 정책을 투명하게 공개하여 이해관계자의 신뢰를 확보합니다.
+                    </p>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </section>
 
       {/* Core Solutions - Tab Navigation */}
@@ -1137,8 +1264,8 @@ export function EsgPage() {
                   {/* Card 1 */}
                   <div className="bg-white rounded-2xl p-10 border border-slate-200 w-[500px] flex-shrink-0 min-h-[320px] flex flex-col">
                     <div className="mb-8">
-                      <div className="text-slate-400 font-semibold text-sm tracking-wide">
-                        삼성전자
+                      <div className="w-32 h-auto">
+                        <SamsungLogo />
                       </div>
                     </div>
                     <div className="flex-1 mb-8">
@@ -1155,8 +1282,8 @@ export function EsgPage() {
                   {/* Card 2 */}
                   <div className="bg-white rounded-2xl p-10 border border-slate-200 w-[500px] flex-shrink-0 min-h-[320px] flex flex-col">
                     <div className="mb-8">
-                      <div className="text-slate-400 font-semibold text-sm tracking-wide">
-                        현대자동차
+                      <div className="w-32 h-auto">
+                        <HyundaiLogo />
                       </div>
                     </div>
                     <div className="flex-1 mb-8">
@@ -1172,9 +1299,9 @@ export function EsgPage() {
 
                   {/* Card 3 */}
                   <div className="bg-white rounded-2xl p-10 border border-slate-200 w-[500px] flex-shrink-0 min-h-[320px] flex flex-col">
-                    <div className="mb-8">
-                      <div className="text-slate-400 font-semibold text-sm tracking-wide">
-                        SK하이닉스
+                    <div className="mb-8 flex items-start -mt-2">
+                      <div className="w-32 h-auto">
+                        <SKHynixLogo />
                       </div>
                     </div>
                     <div className="flex-1 mb-8">
@@ -1191,8 +1318,8 @@ export function EsgPage() {
                   {/* Card 4 */}
                   <div className="bg-white rounded-2xl p-10 border border-slate-200 w-[500px] flex-shrink-0 min-h-[320px] flex flex-col">
                     <div className="mb-8">
-                      <div className="text-slate-400 font-semibold text-sm tracking-wide">
-                        LG화학
+                      <div className="w-32 h-auto">
+                        <LGChemLogo />
                       </div>
                     </div>
                     <div className="flex-1 mb-8">
